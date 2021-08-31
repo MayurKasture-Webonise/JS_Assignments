@@ -14,30 +14,27 @@
 
 <script>
 
-    var windows = [];
-    
-    openTab = () => {
-        windows[0] = window.open('http://www.google.com','_blank');
-        windows[1] = window.open('http://www.google.com','_blank');
-        windows[2] = window.open('http://www.google.com','_blank');
+    let windows = [];
 
-        let length = windows.length;
+    openTab = () => {
+        for(let i=0; i< 3; i++) {
+            windows[i] = window.open('http://www.google.com','_blank');
+        }
+
+        const length = windows.length;
         let i=0;
 
         setInterval(() => {
-            if(windows.length > i )
+            if(windows.length > i)
             {
-                console.log(1)
                 windows[i].close();
-                windows[i++]
+                windows[i++];
             }
         },2000)
     }
 
-
     closeTab = () => {
-
-        let length = windows.length;
+        const length = windows.length;
         for(i=0; i<length; i++){
             windows[i].close();
         }
