@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>User form</title>
+</head>
+<body>
+    
+    <form>
+        <input type="text" id="name"  placeholder="Enter Name" required><br>
+        <span id="nameerror"></span><br>
+        <input type="email" id="email"  placeholder="Enter Email" required><br>
+        <span id="emailerror"></span><br>
+        <button type="submit">Submit</button>
+    </form>
+    <button onclick="showUsers()">SHOW USERS</button>
+
+    <div id="userlist">
+
+    </div>
+</body>
+</html>
+
+<script>
+    
+    var userlist = [];
+    const form = document.forms[0];
+
+    // check Validation
+    validations = (name,email) => {
+
+        var mailformat = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/;
+        var letters = /^[A-Za-z]+$/;
+
+
+        document.getElementById("emailerror").innerHTML = "";
+        document.getElementById("nameerror").innerHTML = "";
+
+        var is_valid = true;
+
+        if(!email.value.match(mailformat))
+        {
+            document.getElementById("emailerror").innerHTML = "can accept a genuine email only";
+            is_valid = false;
+        }
+
+        if(!name.value.match(letters))
+        {
+            document.getElementById("nameerror").innerHTML = "can accept character or numbers.";
+            is_valid = false;
+        }
+
+        return is_valid;
+
+    }
+
+    //Form Submit
+    form.addEventListener("submit", function(event) {
+
+    event.preventDefault();
+    const { name, email } = this.elements;
+
+        //Check validation
+        if(validations(name,email)){
+            let new_obj = {
+                "name"  : name.value,
+                "email" : email.value,
+                "time"  : new Date()
+            };
+            userlist.push(new_obj);
+        }
+    });
+
+
+    // ShowUser List
+    showUsers = () => {
+
+        let length = userlist.length;
+        let table = `<table border="1">
+            <tr>
+                <th>Name</th>
+                <th>Email</th>
+                <th>Time</th>
+            </tr>`;
+
+            if(length > 0 ) {
+
+                for(let i=0; i<length; i++)
+                {
+                    table +=`<tr>
+                        <td>${userlist[i].name}</td>
+                        <td>${userlist[i].email}</td>
+                        <td>${userlist[i].time}</td>
+                    </tr>`;
+                }
+            } else{
+                table +=`<tr >
+                        <td colspan="3"> Record Not Found!</td>
+                    </tr>`;
+            }
+        
+        table += `</table>`;
+        document.getElementById("userlist").innerHTML = table;
+    }
+</script>
